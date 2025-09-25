@@ -10,7 +10,7 @@ class MoviesModel extends Movie {
     required super.voteAverage,
   });
 
-  factory MoviesModel.formJson(Map<String, dynamic> json) {
+  factory MoviesModel.fromJson(Map<String, dynamic> json) {
     return MoviesModel(
       id: json['id'],
       title: json['title'],

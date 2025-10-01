@@ -1,10 +1,9 @@
-import 'dart:developer';
-
-import 'package:dio/dio.dart';
+ 
 import 'package:movie_app/core/constants/api_constance.dart';
 import 'package:movie_app/core/error/exceptions.dart';
 import 'package:movie_app/core/network/error_message_model.dart';
 import 'package:movie_app/movie/data/models/movies_model.dart';
+import 'package:dio/dio.dart';
 
 abstract class BaseMovieRemoteDataSource {
   Future<List<MoviesModel>> getNowPlayingMovies();
@@ -17,9 +16,8 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
   Future<List<MoviesModel>> getNowPlayingMovies() async {
     final response = await Dio().get(ApiConstance.nowPlaying);
     if (response.statusCode == 200) {
-      log(response.data.toString());
       return List<MoviesModel>.from(
-        (response.data['results'] as List).map((e) => MoviesModel.fromJson(e)),
+        response.data['results'].map((e) => MoviesModel.fromJson(e)),
       );
     } else {
       throw ServerException(
@@ -33,7 +31,7 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
     final response = await Dio().get(ApiConstance.popular);
     if (response.statusCode == 200) {
       return List<MoviesModel>.from(
-        (response.data['results'] as List).map((e) => MoviesModel.fromJson(e)),
+        response.data['results'].map((e) => MoviesModel.fromJson(e)),
       );
     } else {
       throw ServerException(
@@ -47,7 +45,7 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
     final response = await Dio().get(ApiConstance.topRated);
     if (response.statusCode == 200) {
       return List<MoviesModel>.from(
-        (response.data['results'] as List).map((e) => MoviesModel.fromJson(e)),
+        response.data['results'].map((e) => MoviesModel.fromJson(e)),
       );
     } else {
       throw ServerException(

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/movie/data/database/base_movie_remote_data_source.dart';
+import 'package:movie_app/core/network/service_locator.dart';
 import 'package:movie_app/movie/presentation/screens/movies_screen.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  MovieRemoteDataSource movieRemoteDataSource = MovieRemoteDataSource();
-  movieRemoteDataSource.getNowPlayingMovies();
+  ServiceLocator().init();
   runApp(const MyApp());
 }
 

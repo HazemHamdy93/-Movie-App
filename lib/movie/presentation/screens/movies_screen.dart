@@ -1,39 +1,27 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:movie_app/movie/data/database/base_movie_remote_data_source.dart';
-import 'package:movie_app/movie/data/repository/movies_repository.dart';
-import 'package:movie_app/movie/domain/repository/base_movies_repository.dart';
-import 'package:movie_app/movie/domain/useCases/get_now_playing_movies_usecase.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/movie/presentation/controller/bloc/movie_bloc.dart';
+import 'package:movie_app/movie/presentation/controller/bloc/movie_event.dart';
+import 'package:movie_app/movie/presentation/controller/bloc/movie_state.dart';
 
-class MoviesScreen extends StatefulWidget {
+class MoviesScreen extends StatelessWidget {
   const MoviesScreen({super.key});
 
   @override
-  State<MoviesScreen> createState() => _MoviesScreenState();
-}
-
-class _MoviesScreenState extends State<MoviesScreen> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getData();
-  }
-
-  void _getData() async {
-    BaseMovieRemoteDataSource baseMovieRemoteDataSource =
-        MovieRemoteDataSource();
-    BaseMoviesRepository baseMoviesRepository = MoviesRepository(
-      baseMovieRemoteDataSource,
+    return BlocProvider(
+      create: (context) {
+        return MoviesBloc()..add(GetNowPlayingMoviesEvent());
+      },
+      child: BlocBuilder<MoviesBloc, MovieState>(
+        builder: (context, state) {
+          print(state);
+          return Scaffold(
+            appBar: AppBar(title: const Text('Movies')),
+            body: const Center(child: Text('Movies Screen')),
+          );
+        },
+      ),
     );
-    final result = await GetNowPlayingMoviesUseCase(
-      baseMoviesRepository,
-    ).execute();
-    log(result.toString());
   }
 }

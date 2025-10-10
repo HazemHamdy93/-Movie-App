@@ -7,15 +7,17 @@ import 'package:movie_app/core/enums.dart';
 import 'package:movie_app/movie/presentation/components/now_playing_movie_item.dart';
 import 'package:movie_app/movie/presentation/controller/bloc/movie_state.dart';
 
- import '../controller/bloc/movie_bloc.dart';
+import '../controller/bloc/movie_bloc.dart';
 
 class NowPlayingMovies extends StatelessWidget {
+  const NowPlayingMovies({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MoviesBloc, MovieState>(
+      buildWhen: (previous, current) =>
+          previous.nowPlayingState != current.nowPlayingState,
       builder: (context, state) {
-        print(state.nowPlayingMovies);
         switch (state.nowPlayingState) {
           case RequestState.isLoading:
             return const Center(
